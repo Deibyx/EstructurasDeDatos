@@ -63,7 +63,7 @@ public class Menu {
                 + "1.Agregar persona de 12PM a 2PM\n"
                 + "2.Agregar persona de 2PM a 4 PM\n"
                 + "3.Agregar persona de 4PM a 6PM\n"
-                + "4.Agregar persona de 6PM a 8PM\n"
+                + "4.Agregar persona de 6PM a 8PM\n\n"
                 + "5.Mostrar lista de 12PM a 2PM\n"
                 + "6.Mostrar lista de 2PM a 4 PM\n"
                 + "7.Mostrar lista de 4PM a 6PM\n"

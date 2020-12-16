@@ -430,8 +430,8 @@ public class Rutina {
             String s = "";
             NodoLS aux = inicioLS;
             while (aux != null) {
-                s = s + aux.getElemento().getNombrePesa() + " "
-                        + aux.getElemento().getPesoPesa() + "<--";
+                s = s + "< " + aux.getElemento().getNombrePesa() + " " +"Peso:"
+                        + aux.getElemento().getPesoPesa()+"Kg" + " >";
                 aux = aux.getSiguiente();
             }
             JOptionPane.showMessageDialog(null,
@@ -505,7 +505,7 @@ public class Rutina {
 
         } else {
 
-            int maquinaBuscada = Integer.parseInt(JOptionPane.showInputDialog(null, "Digite la cédula a buscar:"));
+            int maquinaBuscada = Integer.parseInt(JOptionPane.showInputDialog(null, "Digite el codigo a buscar: "));
 
             NodoSC aux = inicioSC;
             while (aux != null) {
