@@ -24,6 +24,5 @@ public class NodoLS {
         this.siguiente = siguiente;
     }
     
-    
-    
 }
+/*Autores: Deiby Chaves Morales & Angelica Marenco Perez*/

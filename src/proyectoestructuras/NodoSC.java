@@ -24,3 +24,4 @@ public class NodoSC {
     }
 
 }
+/*Autores: Deiby Chaves Morales & Angelica Marenco Perez*/

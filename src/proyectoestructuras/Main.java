@@ -4,5 +4,5 @@ public class Main {
         Menu m=new Menu();
         m.mostrarMenu();
     }
-    /* HOLA*/
+/*Autores: Deiby Chaves Morales & Angelica Marenco Perez*/
 }

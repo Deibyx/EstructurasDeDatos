@@ -681,3 +681,4 @@ public class Rutina {
         return Producto;
     }
 }
+/*Autores: Deiby Chaves Morales & Angelica Marenco Perez*/

@@ -26,3 +26,4 @@ public class NodoSeis {
     }
 
 }
+/*Autores: Deiby Chaves Morales & Angelica Marenco Perez*/
