@@ -1,6 +1,8 @@
 package proyectoestructuras;
 
 import java.util.InputMismatchException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
 
 public class Rutina {
@@ -22,8 +24,15 @@ public class Rutina {
     private NodoLDC inicioDC;
     private NodoLDC finDC;
 
+    private NodoProductos inicioProductos;
+    private NodoProductos finProductos;
+
     private NodoSC inicioSC;
     private NodoSC finSC;
+
+    private NodoArbol raiz;
+
+    private String Producto;
 
     public Rutina() {
 
@@ -46,6 +55,9 @@ public class Rutina {
 
         this.inicioSC = null;
         this.finSC = null;
+
+        this.inicioProductos = null;
+        this.finProductos = null;
 
     }
 
@@ -106,17 +118,90 @@ public class Rutina {
         }
     }
 
+    public boolean esVaciaArbol() {
+        if (raiz == null) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean esVaciaProductos() {
+        if (inicioProductos == null) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////
+    public static boolean isInt(String strNum) {
+        try {
+            int f = Integer.parseInt(strNum);
+        } catch (NumberFormatException | NullPointerException nfe) {
+            return false;
+        }
+        return true;
+    }
+
     ///////////////////////////////////////////////////////////////////////////////////////
     public void agregarClienteLDC() {
         Dato d = new Dato();
+
         d.setNombre(JOptionPane.showInputDialog(null,
                 "Digite el nombre del cliente: "));
-        d.setCedula(Integer.parseInt(JOptionPane.showInputDialog(null,
-                "Digite el numero de cedula: ")));
-        d.setTelefono(Integer.parseInt(JOptionPane.showInputDialog(null,
-                "Digite el numero de telefono: ")));
-        d.setCorreo(JOptionPane.showInputDialog(null,
-                "Digite el correo electronico: "));
+
+        boolean validacionCedula = false;
+        while (!validacionCedula) {
+
+            String cedula = JOptionPane.showInputDialog("Digite el numero de cedula: ");
+            if (isInt(cedula)) {
+                if (cedula.length() == 9) {
+                    validacionCedula = true;
+
+                } else {
+                    JOptionPane.showMessageDialog(null, "El número ingresado es inválido.");
+                }
+                long cedulaValidada = Long.parseLong(cedula);
+                d.setCedula(cedulaValidada);
+            }
+        }
+
+        boolean validacionTelefono = false;
+        while (!validacionTelefono) {
+
+            String telefono = JOptionPane.showInputDialog("Digite el numero de telefono: ");
+            if (isInt(telefono)) {
+                if (telefono.length() == 8) {
+                    validacionTelefono = true;
+
+                } else {
+                    JOptionPane.showMessageDialog(null, "El número ingresado es inválido.");
+                }
+                long ltelefono = Long.parseLong(telefono);
+                d.setTelefono(Integer.parseInt(telefono));
+            }
+        }
+
+        boolean validacionCorreo = false;
+        while (!validacionCorreo) {
+
+            Pattern pattern = Pattern
+                    .compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+                            + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
+            String email = JOptionPane.showInputDialog("Digite el correo electronico: ");
+
+            Matcher mather = pattern.matcher(email);
+
+            if (mather.find() == true) {
+                validacionCorreo = true;
+            } else {
+                JOptionPane.showMessageDialog(null, "El email ingresado es inválido.");
+            }
+
+            d.setCorreo(email);
+
+        }
 
         NodoLDC nuevo = new NodoLDC();
         nuevo.setElemento(d);
@@ -437,4 +522,162 @@ public class Rutina {
         return Estado;
     }
 
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    public void agregarFresco() {
+        Refrescos f = new Refrescos();
+        f.setCodigo(Integer.parseInt(JOptionPane.showInputDialog(null,
+                "Digite un codigo de refresco: ")));
+        NodoArbol nuevo = new NodoArbol();
+        nuevo.setElemento(f);
+        if (esVaciaArbol()) {
+            raiz = nuevo;
+        } else {
+            crearNodo(raiz, nuevo);
+        }
+    }
+
+    public void crearNodo(NodoArbol raiz, NodoArbol nuevo) {
+        if (nuevo.getElemento().getCodigo() <= raiz.getElemento().getCodigo()) {
+            if (raiz.getEnlaceIzq() == null) {
+                raiz.setEnlaceIzq(nuevo);
+            } else {
+                crearNodo(raiz.getEnlaceIzq(), nuevo);
+            }
+        } else {
+            if (raiz.getEnlaceDer() == null) {
+                raiz.setEnlaceDer(nuevo);
+            } else {
+                crearNodo(raiz.getEnlaceDer(), nuevo);
+            }
+        }
+    }
+
+    public String mostrarFrescos(String s) {
+        if (!esVaciaArbol()) {
+            s = s + mostrarNodo(raiz, s);
+        } else {
+            JOptionPane.showMessageDialog(null,
+                    "No se puede mostrar, árbol vacío!");
+        }
+        return s;
+    }
+
+    public String mostrarNodo(NodoArbol n, String s) {
+        if (n != null) {
+
+            s = mostrarNodo(n.getEnlaceIzq(), s);
+            s = s + n.getElemento().getCodigo() + " " + this.buscarProductoLista(n.getElemento().getCodigo()) + " <==> ";
+            s = mostrarNodo(n.getEnlaceDer(), s);
+        }
+        return s;
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////////////
+    public void agregarProductosLDC(String nombre, int code) {
+        Refrescos f = new Refrescos();
+        f.setNombreProducto(nombre);
+        f.setCodigo(code);
+
+        NodoProductos nuevo = new NodoProductos();
+        nuevo.setElemento(f);
+        if (esVaciaProductos()) {
+            inicioProductos = nuevo;
+            finProductos = nuevo;
+            finProductos.setSiguiente(inicioProductos);
+            inicioProductos.setAnterior(finProductos);
+        } else if (f.getCodigo() < inicioProductos.getElemento().getCodigo()) {
+            nuevo.setSiguiente(inicioProductos);
+            inicioProductos = nuevo;
+            finProductos.setSiguiente(inicioProductos);
+            inicioProductos.setAnterior(finProductos);
+        } else if (f.getCodigo() >= finProductos.getElemento().getCodigo()) {
+            finProductos.setSiguiente(nuevo);
+            finProductos = nuevo;
+            finProductos.setSiguiente(inicioProductos);
+            inicioProductos.setAnterior(finProductos);
+        } else {
+            NodoProductos aux = inicioProductos;
+            while (aux.getSiguiente().getElemento().getCodigo() < f.getCodigo()) {
+
+                aux = aux.getSiguiente();
+            }
+            nuevo.setSiguiente(aux.getSiguiente());
+            nuevo.setAnterior(aux);
+            aux.setSiguiente(nuevo);
+            nuevo.getSiguiente().setAnterior(nuevo);
+        }
+    }
+
+    public void mostrarProductosLDC() {
+        if (!esVaciaProductos()) {
+            String s = "";
+            NodoProductos aux = inicioProductos;
+            s = s + " < " + aux.getElemento().getNombreProducto() + " - " + aux.getElemento().getCodigo() + " >" + "\n";
+            aux = aux.getSiguiente();
+            while (aux != inicioProductos) {
+                s = s + " < " + aux.getElemento().getNombreProducto() + " - " + aux.getElemento().getCodigo() + " >" + "\n";
+                aux = aux.getSiguiente();
+            }
+            JOptionPane.showMessageDialog(null, "La lista contiene:\n" + s);
+        } else {
+            JOptionPane.showMessageDialog(null, "No se puede mostrar, lista vacia!");
+        }
+    }
+
+    public String buscarProductoLista(int code) {
+
+        String Name = "";
+
+        if (esVaciaProductos()) {
+
+            JOptionPane.showMessageDialog(null, "No se puede extraer, lista vacía!");
+
+        } else {
+
+            NodoProductos aux = inicioProductos;
+            while (aux != null) {
+                if (code == aux.getElemento().getCodigo()) {
+
+                    Name = aux.getElemento().getNombreProducto();
+                    return Name;
+                }
+
+                aux = aux.getSiguiente();
+            }
+
+        }
+        return Name;
+    }
+
+    public String buscarProducto() {
+
+        Producto = "";
+
+        if (esVaciaArbol()) {
+
+            JOptionPane.showMessageDialog(null, "No se puede extraer, lista vacía!");
+
+        } else {
+
+            NodoArbol aux2 = raiz;
+            int productoBuscado = aux2.getElemento().getCodigo();
+
+            NodoProductos aux = inicioProductos;
+            while (aux2 != null) {
+                if (productoBuscado == aux2.getElemento().getCodigo()) {
+                    JOptionPane.showMessageDialog(null, this.buscarProductoLista(productoBuscado));
+                    Producto = aux2.getElemento().getNombreProducto();
+                    return Producto;
+                } else {
+
+                    Producto = "No identificado";
+
+                }
+                Producto = aux2.getElemento().getNombreProducto();
+                aux2 = aux2.getEnlaceDer();
+            }
+
+        }
+        return Producto;
+    }
 }

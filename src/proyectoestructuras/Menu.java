@@ -4,10 +4,11 @@ import javax.swing.JOptionPane;
 
 public class Menu {
 
-    private int opc, opc2, opc3, opc4;
-    
+    private int opc, opc2, opc3, opc4, opc5;
+
     private Rutina r = new Rutina();
-    
+    private String s = "";
+
     public void mostrarMenu() {
         opc = Integer.parseInt(JOptionPane.showInputDialog(null, "*MENU PRINCIPAL*\n\n"
                 + "1.Agregar Cliente\n"
@@ -16,7 +17,8 @@ public class Menu {
                 + "4.Horarios\n"
                 + "5.Maquinas\n"
                 + "6.Pesas\n"
-                + "7.Salir\n\n"
+                + "7.Refrescos\n"
+                + "8.Salir\n\n"
                 + "Digite su opción:"));
         switch (opc) {
             case 1: {
@@ -41,6 +43,9 @@ public class Menu {
                 mostrarMenuCuatro();
             }
             case 7: {
+                mostrarMenuCinco();
+            }
+            case 8: {
                 System.exit(0);
             }
             default: {
@@ -108,7 +113,7 @@ public class Menu {
             default: {
                 JOptionPane.showMessageDialog(null,
                         "Debe seleeccionar una opción correcta!");
-                mostrarMenuDos();
+                mostrarMenu();
             }
         }
 
@@ -143,7 +148,7 @@ public class Menu {
             default: {
                 JOptionPane.showMessageDialog(null,
                         "Debe seleeccionar una opción correcta!");
-                mostrarMenuDos();
+                mostrarMenu();
             }
         }
 
@@ -173,7 +178,43 @@ public class Menu {
             default: {
                 JOptionPane.showMessageDialog(null,
                         "Debe seleeccionar una opción correcta!");
-                mostrarMenuDos();
+                mostrarMenu();
+            }
+        }
+    }
+
+    public void mostrarMenuCinco() {
+        s = "";
+        opc5 = Integer.parseInt(JOptionPane.showInputDialog(null, "**MENU Refrescos**\n\n"
+                + "1.Agregar Refresco\n"
+                + "2.Mostrar listado de frescos\n"
+                + "3.Salir\n\n"
+                + "Digite su opción:"));
+
+        switch (opc5) {
+            case 1: {
+
+                r.agregarProductosLDC("Agua", 7777);
+                r.agregarProductosLDC("Gatorade", 1425);
+                r.agregarProductosLDC("Powerade", 2514);
+                r.agregarProductosLDC("RedBull", 9856);
+
+                r.agregarFresco();
+                mostrarMenuCinco();
+            }
+            case 2: {
+                s = s + r.mostrarFrescos(s);
+                JOptionPane.showMessageDialog(null, "Lista de refrescos disponibles: \n" + s);
+                mostrarMenuCinco();
+            }
+            case 3: {
+
+                mostrarMenu();
+
+            }
+            default: {
+                JOptionPane.showMessageDialog(null, "Debe seleeccionar una opción correcta!");
+                mostrarMenu();
             }
         }
     }
